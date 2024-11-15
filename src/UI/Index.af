@@ -1,0 +1,9 @@
+.needs <std>
+import Content from "Web/Content";
+
+class Index signs Content {
+	Index init() {
+		my.loadFile("./html/index.html");
+		return my;
+	};
+};

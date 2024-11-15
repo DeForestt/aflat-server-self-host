@@ -1,0 +1,23 @@
+.needs <std>
+
+import {case, report, require} from "ATest.af" under test;
+import string from "String";
+import TestSuite from "ATest.af";
+
+bool simpleTest() : test.case("simpleTest") {
+	test.require(3 != 3, "3 is 3");
+	return 1 == 1;
+};
+
+bool simpleFail() : test.case("simpleFail") {
+	return 1 == 2;
+};
+
+int main() {
+	TestSuite suite = new TestSuite("Simple Test Suite");
+	suite.addCase(simpleTest);
+	suite.addCase(simpleFail);
+	suite.run();
+	test.report();
+	return 0;
+};
