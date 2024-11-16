@@ -21,3 +21,10 @@ class GettingStarted signs Content {
         return my;
     };
 };
+
+class InstallScript signs Content {
+    InstallScript init() {
+        my.loadFile("./content/install.sh");
+        return my;
+    };
+};

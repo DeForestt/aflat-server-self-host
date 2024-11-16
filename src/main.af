@@ -11,7 +11,7 @@ import {methodToString} from "HTTP" under http;
 import {print} from "String" under str;
 import {accept, reject} from "Utils/Result" under res;
 
-import Index, Example, GettingStarted from "./src/UI/Index";
+import Index, Example, GettingStarted, InstallScript from "./src/UI/Index";
 
 class AflatServer signs Server {
 
@@ -22,6 +22,7 @@ class AflatServer signs Server {
 	Index indexHTMX = new Index();
 	Example exampleHTMX = new Example();
 	GettingStarted gettingStartedHTMX = new GettingStarted();
+	InstallScript installScriptSH = new InstallScript();
 
 	Result example() : GET("/examples") {
 		let resp = new HTTPResponce(my.exampleHTMX.render(), "200", "OK");
@@ -31,6 +32,12 @@ class AflatServer signs Server {
 
 	Result gettingStarted() : GET("/getting-started") {
 		let resp = new HTTPResponce(my.gettingStartedHTMX.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		return res.accept(resp);
+	};
+
+	Result installScript() : GET("/install.sh") {
+		let resp = new HTTPResponce(my.installScriptSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		return res.accept(resp);
 	};
