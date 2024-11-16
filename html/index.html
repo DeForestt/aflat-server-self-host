@@ -39,20 +39,6 @@
         </div>
     </section>
 
-    <!-- Getting Started Section -->
-    <section class="container mx-auto my-8 p-6 bg-indigo-100 shadow-md rounded-lg">
-        <h2 class="text-2xl font-semibold text-indigo-800 mb-4">Getting Started with Aflat</h2>
-        <p>Follow these instructions to install Aflat and begin creating with it right away:</p>
-        
-        <h3 class="text-lg font-semibold text-indigo-800 mt-4">Installation</h3>
-        <pre class="bg-gray-200 p-4 rounded my-2 text-sm"><code>curl -s https://raw.githubusercontent.com/DeForestt/aflat/main/install.sh | bash</code></pre>
-
-        <h3 class="text-lg font-semibold text-indigo-800 mt-4">Clone the Repository</h3>
-        <pre class="bg-gray-200 p-4 rounded my-2 text-sm"><code>git clone https://github.com/DeForestt/aflat</code></pre>
-
-        <p class="mt-4 text-sm">Once installed, you can start building projects with Aflat or explore the extensive documentation available in the repository.</p>
-    </section>
-
     <!-- Why Choose Aflat Section -->
     <section class="container mx-auto my-8 p-6 bg-white shadow-md rounded-lg">
         <h2 class="text-2xl font-semibold mb-4">Why Choose Aflat?</h2>
@@ -70,36 +56,23 @@
         </div>
     </section>
 
-    <!-- Code Examples Section -->
+    <!-- Tabs -->
     <section class="container mx-auto my-8 p-6 bg-indigo-100 shadow-md rounded-lg">
-        <h2 class="text-2xl font-semibold text-indigo-800 mb-4">Aflat Code Examples</h2>
-
-        <!-- Hello World Example -->
-        <div class="mb-6">
-            <h3 class="text-xl font-semibold text-indigo-800 mb-2">Hello, World!</h3>
-            <p>This is a simple example that prints "Hello, World!" to the console.</p>
-            <pre class="bg-gray-200 p-4 rounded my-2 text-sm"><code>
-import * from "io" under io;
-int main() {
-    io.print("Hello, World!");
-};
-            </code></pre>
-        </div>
-
-        <!-- Basic Loop Example -->
-        <div class="mb-6">
-            <h3 class="text-xl font-semibold text-indigo-800 mb-2">Basic Loop</h3>
-            <p>This example demonstrates a loop that iterates 10 times, printing each value.</p>
-            <pre class="bg-gray-200 p-4 rounded my-2 text-sm"><code>
-import {print} from "String" under str;
-int main() {
-    for mutable int i = 0; i < 10; i = i + 1 {
-        str.print(`Value: ${i}\n`);
-    };
-    return 0;
-};
-            </code></pre>
-        </div>
+        <button 
+            hx-get="/getting-started" 
+            hx-trigger="click" 
+            hx-target="#tabs"
+            class="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700">
+            Getting Started
+        </button>
+        <button 
+            hx-get="/examples" 
+            hx-trigger="click" 
+            hx-target="#tabs"
+            class="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700">
+            Code Examples
+        </button>
+        <div id="tabs" class="mt-6" hx-get="/getting-started" hx-trigger="load"></div>
     </section>
 
     <!-- Footer Section -->

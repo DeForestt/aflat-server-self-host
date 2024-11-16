@@ -7,3 +7,17 @@ class Index signs Content {
 		return my;
 	};
 };
+
+class Example signs Content {
+    Example init() {
+        my.loadFile("./html/examples.html");
+        return my;
+    };
+};
+
+class GettingStarted signs Content {
+    GettingStarted init() {
+        my.loadFile("./html/getting-started.html");
+        return my;
+    };
+};
