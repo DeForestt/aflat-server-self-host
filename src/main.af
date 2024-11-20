@@ -4,25 +4,43 @@ import Map from "Utils/Map";
 import Server from "HTTP/Server";
 import GET, POST, PUT, DELETE from "HTTP/Endpoints";
 import Middleware from "HTTP/Middleware";
-import HTTPMessage, HTTPResponce from "HTTP";
-import Endpoints from "HTTP/Endpoint";
+import HTTPMessage, HTTPResponce, NotImplementedError from "HTTP";
+import Endpoints, NotFoundImpl from "HTTP/Endpoint";
 import Content from "Web/Content";
 import {methodToString} from "HTTP" under http;
 import {print} from "String" under str;
 import {accept, reject} from "Utils/Result" under res;
 
-import Index, Example, GettingStarted, InstallScript from "./src/UI/Index";
+import Index, Example, GettingStarted, InstallScript, NotFoundPage from "./src/UI/Index";
+import Package from "./src/API/Package";
 
 class AflatServer signs Server {
 
-	HTTPMessage logRequest(HTTPMessage req) : Middleware {
-		str.print(`[{http.methodToString(req.method)}] {req.endpoint}\n`);	
+	Map logRequest() : Middleware {
+		return {
+			"after": [Server __s, HTTPMessage req, HTTPResponce r] => {
+				str.print(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
+				str.print(`\t{r.getStatusCode()} {r.getStatusMessage()}\n`);
+				return r;
+			}
+		};
 	};
 
 	Index indexHTMX = new Index();
 	Example exampleHTMX = new Example();
 	GettingStarted gettingStartedHTMX = new GettingStarted();
 	InstallScript installScriptSH = new InstallScript();
+
+
+	HTTPResponce NotFound(HTTPMessage req) : NotFoundImpl {
+		const NotFoundPage notFoundPage = new NotFoundPage();
+		str.print(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
+		notFoundPage.method = http.methodToString(req.method);
+		notFoundPage.endpoint = req.endpoint;
+		let resp = new HTTPResponce(notFoundPage.render(), "404", "Not Found");
+		resp.addHeader("Content-Type", "text/html");
+		return resp;
+	};
 
 	Result example() : GET("/examples") {
 		let resp = new HTTPResponce(my.exampleHTMX.render(), "200", "OK");
@@ -41,15 +59,18 @@ class AflatServer signs Server {
 		resp.addHeader("Content-Type", "text/html");
 		return res.accept(resp);
 	};
-	
-	Map index() : Endpoints("/") {
-		return {
-			"GET": [AflatServer my] => {
-				let resp = new HTTPResponce(my.indexHTMX.render(), "200", "OK");
-				resp.addHeader("Content-Type", "text/html");
-				return res.accept(resp);
-			}
-		};
+
+	Result index() : GET("/") {
+		let resp = new HTTPResponce(my.indexHTMX.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		return res.accept(resp);
+	};
+
+	Result getPackage() : GET("/api/package") {
+		let package = new Package("Aflat");
+		let resp = new HTTPResponce(package.toString().cstr(), "200", "OK");
+		resp.addHeader("Content-Type", "application/json");
+		return res.accept(resp);
 	};
 
 	AflatServer init() {

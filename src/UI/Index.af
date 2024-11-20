@@ -1,5 +1,7 @@
 .needs <std>
 import Content from "Web/Content";
+import Bind from "Web/Content/Bind";
+import string from "String";
 
 class Index signs Content {
 	Index init() {
@@ -25,6 +27,22 @@ class GettingStarted signs Content {
 class InstallScript signs Content {
     InstallScript init() {
         my.loadFile("./content/install.sh");
+        return my;
+    };
+};
+
+class NotFoundPage signs Content {
+
+    adr method(string m) : Bind("method") {
+        return m.cstr();
+    };
+
+    adr endpoint(string e) : Bind("endpoint") {
+        return e.cstr();
+    };
+
+    NotFoundPage init() {
+        my.loadFile("./html/page-not-found.html");
         return my;
     };
 };

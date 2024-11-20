@@ -1,0 +1,14 @@
+.needs <std>
+import JSONObject, JSONType from "JSON";
+import JSONProperty from "JSON/Property";
+import string from "String";
+
+class Package signs JSONObject {
+    string name(string value) : JSONProperty("name", JSONType.String) {
+        return value; 
+    };
+    Package init(string name) {
+        my.name = name;
+        return my;
+    };
+};
