@@ -35,6 +35,7 @@ class AflatServer signs Server {
 	HTTPResponce NotFound(HTTPMessage req) : NotFoundImpl {
 		const NotFoundPage notFoundPage = new NotFoundPage();
 		str.print(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
+		str.print(`\t404 Not Found\n`);
 		notFoundPage.method = http.methodToString(req.method);
 		notFoundPage.endpoint = req.endpoint;
 		let resp = new HTTPResponce(notFoundPage.render(), "404", "Not Found");
