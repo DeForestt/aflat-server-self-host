@@ -4,15 +4,23 @@ import Map from "Utils/Map";
 import Server from "HTTP/Server";
 import GET, POST, PUT, DELETE from "HTTP/Endpoints";
 import Middleware from "HTTP/Middleware";
-import HTTPMessage, HTTPResponce, NotImplementedError from "HTTP";
+import HTTPMessage, HTTPResponce, NotImplementedError, NotFoundError from "HTTP";
 import Endpoints, NotFoundImpl from "HTTP/Endpoint";
 import Content from "Web/Content";
+import Option from "Utils/Option";
+import string from "String";
 import {methodToString} from "HTTP" under http;
 import {print} from "String" under str;
 import {accept, reject} from "Utils/Result" under res;
 
-import Index, Example, GettingStarted, InstallScript, NotFoundPage from "./src/UI/Index";
+import Index, Example, GettingStarted, InstallScript, NotFoundPage, InstallPackage from "./src/UI/Index";
 import Package from "./src/API/Package";
+
+private string nameFromGit(string repo) {
+	let parts = repo.split('/');
+	string last = parts.back().or(``);
+	return last;
+};
 
 class AflatServer signs Server {
 
@@ -30,6 +38,8 @@ class AflatServer signs Server {
 	Example exampleHTMX = new Example();
 	GettingStarted gettingStartedHTMX = new GettingStarted();
 	InstallScript installScriptSH = new InstallScript();
+	InstallPackage installPackageSH = new InstallPackage();
+
 
 
 	HTTPResponce NotFound(HTTPMessage req) : NotFoundImpl {
@@ -55,9 +65,17 @@ class AflatServer signs Server {
 		return res.accept(resp);
 	};
 
+	Result installPackage() : GET("/install-package.sh") {
+		my.installPackageSH.name = `LIBRARY_NAME`;
+		my.installPackageSH.repo = `github.com/DeForestt/test_repo`;
+		let resp = new HTTPResponce(my.installPackageSH.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/plain");
+		return res.accept(resp);
+	};
+
 	Result installScript() : GET("/install.sh") {
 		let resp = new HTTPResponce(my.installScriptSH.render(), "200", "OK");
-		resp.addHeader("Content-Type", "text/html");
+		resp.addHeader("Content-Type", "text/plain");
 		return res.accept(resp);
 	};
 
@@ -67,10 +85,22 @@ class AflatServer signs Server {
 		return res.accept(resp);
 	};
 
-	Result getPackage() : GET("/api/package") {
-		let package = new Package("Aflat");
-		let resp = new HTTPResponce(package.toString().cstr(), "200", "OK");
-		resp.addHeader("Content-Type", "application/json");
+	Result getPackage(HTTPMessage __req, ? string repo) : GET("/api/package/:*") {
+		string repoVal = repo.or(``);
+		if repoVal == "" {
+			return res.reject(new NotImplementedError("Not Implemented"));
+		};
+		string name = nameFromGit(repoVal);
+
+		if repoVal == "" | name == "" {
+			return res.reject(new NotFoundError("Not Found"));
+		};
+
+		my.installPackageSH.name = name;
+		my.installPackageSH.repo = repoVal;
+
+		let resp = new HTTPResponce(my.installPackageSH.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/plain");
 		return res.accept(resp);
 	};
 

@@ -31,6 +31,21 @@ class InstallScript signs Content {
     };
 };
 
+class InstallPackage signs Content {
+    adr name(string n) : Bind("name") {
+        return n.cstr();
+    };
+
+    adr repo(string n) : Bind("repo") {
+        return n.cstr();
+    };
+
+    InstallPackage init() {
+        my.loadFile("./content/install-package.sh");
+        return my;
+    };
+};
+
 class NotFoundPage signs Content {
 
     adr method(string m) : Bind("method") {

@@ -7,8 +7,14 @@ class Package signs JSONObject {
     string name(string value) : JSONProperty("name", JSONType.String) {
         return value; 
     };
-    Package init(string name) {
+
+    string gitrepo(string value) : JSONProperty("gitrepo", JSONType.String) {
+        return value; 
+    };
+
+    Package init(string name, string gitrepo) {
         my.name = name;
+        my.gitrepo = gitrepo;
         return my;
     };
 };
