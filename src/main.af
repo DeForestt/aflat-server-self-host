@@ -10,8 +10,8 @@ import Content from "Web/Content";
 import Option from "Utils/Option";
 import string from "String";
 import {methodToString} from "HTTP" under http;
-import {print} from "String" under str;
 import {accept, reject} from "Utils/Result" under res;
+import { info, warning } from "./src/flat_log" under log;
 
 import Index, Example, GettingStarted, InstallScript, NotFoundPage, InstallPackage from "./src/UI/Index";
 import Package from "./src/API/Package";
@@ -27,8 +27,8 @@ class AflatServer signs Server {
 	Map logRequest() : Middleware {
 		return {
 			"after": [Server __s, HTTPMessage req, HTTPResponce r] => {
-				str.print(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
-				str.print(`\t{r.getStatusCode()} {r.getStatusMessage()}\n`);
+				log.info(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
+				log.info(`\t{r.getStatusCode()} {r.getStatusMessage()}\n`);
 				return r;
 			}
 		};
@@ -44,8 +44,8 @@ class AflatServer signs Server {
 
 	HTTPResponce NotFound(HTTPMessage req) : NotFoundImpl {
 		const NotFoundPage notFoundPage = new NotFoundPage();
-		str.print(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
-		str.print(`\t404 Not Found\n`);
+		log.warning(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
+		log.warning(`\t attempted to access a non-existant page {req.endpoint} \n`);
 		notFoundPage.method = http.methodToString(req.method);
 		notFoundPage.endpoint = req.endpoint;
 		let resp = new HTTPResponce(notFoundPage.render(), "404", "Not Found");
