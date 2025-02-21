@@ -50,19 +50,19 @@ class AflatServer signs Server {
 		notFoundPage.endpoint = req.endpoint;
 		let resp = new HTTPResponce(notFoundPage.render(), "404", "Not Found");
 		resp.addHeader("Content-Type", "text/html");
-		return resp;
+		resp;
 	};
 
 	Result example() : GET("/examples") {
 		let resp = new HTTPResponce(my.exampleHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
-		return res.accept(resp);
+		res.accept(resp)
 	};
 
 	Result gettingStarted() : GET("/getting-started") {
 		let resp = new HTTPResponce(my.gettingStartedHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
-		return res.accept(resp);
+		res.accept(resp)
 	};
 
 	Result installPackage() : GET("/install-package.sh") {
@@ -70,30 +70,30 @@ class AflatServer signs Server {
 		my.installPackageSH.repo = `github.com/DeForestt/test_repo`;
 		let resp = new HTTPResponce(my.installPackageSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
-		return res.accept(resp);
+		return res.accept(resp)
 	};
 
 	Result installScript() : GET("/install.sh") {
 		let resp = new HTTPResponce(my.installScriptSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
-		return res.accept(resp);
+		res.accept(resp)
 	};
 
 	Result index() : GET("/") {
 		let resp = new HTTPResponce(my.indexHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
-		return res.accept(resp);
+		res.accept(resp)
 	};
 
 	Result getPackage(HTTPMessage __req, ? string repo) : GET("/api/package/:*") {
 		string repoVal = repo.or(``);
 		if repoVal == "" {
-			return res.reject(new NotImplementedError("Not Implemented"));
+			res.reject(new NotImplementedError("Not Implemented"))
 		};
 		string name = nameFromGit(repoVal);
 
 		if repoVal == "" | name == "" {
-			return res.reject(new NotFoundError("Not Found"));
+			res.reject(new NotFoundError("Not Found"))
 		};
 
 		my.installPackageSH.name = name;
@@ -101,7 +101,7 @@ class AflatServer signs Server {
 
 		let resp = new HTTPResponce(my.installPackageSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
-		return res.accept(resp);
+		res.accept(resp)
 	};
 
 	AflatServer init() {

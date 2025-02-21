@@ -27,5 +27,8 @@ COPY . .
 # Expose port 8080 for the Aflat server
 EXPOSE 8080
 
+# Run aflat build
+RUN /aflat/bin/aflat build
+
 # Set the entry point to run the Aflat project
-ENTRYPOINT ["/aflat/bin/aflat", "run"]
+ENTRYPOINT ["./bin/a.out"]
