@@ -72,20 +72,20 @@ class AflatServer signs Server {
 		resp.addHeader("Content-Type", "text/plain");
 		return res.accept(resp)
 	};
-
-	Result installScript() : GET("/install.sh") {
+	
+	fn installScript() -> Result : GET("/install.sh") {
 		let resp = new HTTPResponce(my.installScriptSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
 		res.accept(resp)
 	};
 
-	Result index() : GET("/") {
+	fn index() -> Result : GET("/") {
 		let resp = new HTTPResponce(my.indexHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
-	Result getPackage(HTTPMessage __req, ? string repo) : GET("/api/package/:*") {
+	fn getPackage(HTTPMessage __req, ? string repo) -> Result : GET("/api/package/:*") {
 		string repoVal = repo.or(``);
 		if repoVal == "" {
 			res.reject(new NotImplementedError("Not Implemented"))
@@ -110,7 +110,7 @@ class AflatServer signs Server {
 };
 
 
-int main() {
+fn main() {
 	let server = AflatServer();
 	server.listen();
 	return 0;
