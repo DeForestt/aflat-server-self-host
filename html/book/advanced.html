@@ -1,0 +1,153 @@
+<section class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">Advanced Concepts in AFlat</h2>
+
+    <p class="mb-4">
+        This section covers advanced features of AFlat, including function pointers, 
+        contracts, decorators, and module usage. These features allow developers 
+        to write more flexible and powerful code while maintaining control over 
+        performance and memory.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Function Pointers</h3>
+    <p class="mb-4">
+        Functions in AFlat can be assigned to variables and passed around as pointers. 
+        Unlike other languages, function pointers in AFlat use the <code>adr</code> type.
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn add(int a, int b) -> int {
+    return a + b;
+};
+
+fn main() -> int {
+    adr func = add;  // Assign function to a pointer
+    int result = func(2, 3);  // Call function via pointer
+    return result;
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Contracts</h3>
+    <p class="mb-4">
+        Contracts in AFlat allow for an interface-like structure. Classes that 
+        sign a contract must implement its defined members.
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+contract {
+    adr work = NULL;
+};
+
+class Worker signs contract {
+    fn init() -> Worker {
+        my.work = [] => {
+            print("Worker is working...");
+        };
+        return my;
+    };
+};
+
+fn main() {
+    Worker w = Worker();
+    w.work();  // Calls the function stored in work
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Function Decorators</h3>
+    <p class="mb-4">
+        AFlat supports function decorators, which allow modifying function 
+        behavior dynamically.
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn logDecorator(adr func, adr arg) -> adr {
+    print("Function is being called...");
+    return func(arg);
+};
+
+fn sayHello(adr name) : logDecorator {
+    print("Hello, " + name);
+};
+
+fn main() {
+    sayHello("AFlat");
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Class Decorators</h3>
+    <p class="mb-4">
+        Similar to function decorators, class decorators allow modifying class 
+        behavior dynamically.
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+class Decorator {
+    const adr func;
+    fn init(adr func) -> Decorator {
+        my.func = func;
+        return my;
+    };
+
+    fn run() {
+        my.func();
+    };
+};
+
+class MyClass {
+    fn hello() : Decorator {
+        print("Hello from MyClass");
+    };
+};
+
+fn main() {
+    MyClass obj = MyClass();
+    obj.hello.run();
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Modules and Imports</h3>
+    <p class="mb-4">
+        AFlat uses a module system to structure code efficiently. Functions 
+        and classes can be imported from other modules.
+    </p>
+
+    <h4 class="text-lg font-semibold mt-4">Exporting a Function</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+// Inside my_module.af
+export fn add(int a, int b) -> int {
+    return a + b;
+};
+    </code></pre>
+
+    <h4 class="text-lg font-semibold mt-4">Importing a Function</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+// Inside another file
+import { add } from "my_module" under mod;
+
+fn main() -> int {
+    int result = mod.add(3, 4);
+    return result;
+};
+    </code></pre>
+
+    <h4 class="text-lg font-semibold mt-4">Importing a Class</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+import MyClass from "my_module";
+
+fn main() {
+    MyClass obj = MyClass();
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Next Steps</h3>
+    <p class="mb-4">
+        You are now familiar with advanced AFlat features! Learn about references
+        and ownership in the
+        <button 
+            hx-get="/book/ownership" 
+            hx-trigger="click" 
+            hx-target="#content"
+            class="text-blue-600 underline">
+            Ownership
+        </button> section.
+    </p>
+</section>

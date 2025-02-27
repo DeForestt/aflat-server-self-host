@@ -1,0 +1,53 @@
+.needs <std>
+import Content from "Web/Content";
+import Bind from "Web/Content/Bind";
+import string from "String";
+
+class Book signs Content {
+    Book init() {
+        my.loadFile("./html/book.html");
+        return my;
+    };
+};
+
+class BookIntro signs Content {
+    BookIntro init() {
+        my.loadFile("./html/book/introduction.html");
+        return my;
+    };
+};
+
+class BookInstall signs Content {
+    fn init() -> BookInstall {
+        my.loadFile("./html/book/install.html");
+        return my;
+    };
+};
+
+class BookBasics signs Content {
+    fn init() -> BookBasics {
+        my.loadFile("./html/book/basics.html");
+        return my;
+    };
+};
+
+class BookMemory signs Content {
+    fn init() -> BookMemory {
+        my.loadFile("./html/book/memory-managment.html");
+        return my;
+    };
+};
+
+class BookAdvanced signs Content {
+    fn init() -> BookAdvanced {
+        my.loadFile("./html/book/advanced.html");
+        return my;
+    };
+};
+
+class BookOwnership signs Content {
+    fn init() -> BookOwnership {
+        my.loadFile("./html/book/ownership.html");
+        return my;
+    };
+};

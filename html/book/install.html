@@ -1,0 +1,87 @@
+<section class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">Installing AFlat</h2>
+
+    <p class="mb-4">
+        AFlat is a Linux-only programming language. Follow the steps below to install it quickly on your system.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">One Command to Rule Them All</h3>
+    <p class="mb-2">
+        The fastest way to install AFlat is by running the following command:
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        curl -s https://raw.githubusercontent.com/DeForestt/aflat/main/install.sh | bash
+    </pre>
+    <p class="mb-4">
+        This will download and install the AFlat compiler automatically.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Manual Installation</h3>
+    <p class="mb-4">
+        If you prefer to install AFlat manually, follow these steps:
+    </p>
+
+    <h4 class="text-lg font-semibold">1. Clone the Repository</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        git clone https://github.com/DeForestt/aflat
+    </pre>
+
+    <h4 class="text-lg font-semibold">2. Install Dependencies</h4>
+    <p class="mb-2">
+        Ensure you have `make` installed:
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        sudo apt install make
+    </pre>
+
+    <h4 class="text-lg font-semibold">3. Build AFlat</h4>
+    <p class="mb-2">
+        Navigate into the AFlat directory and compile:
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        cd aflat
+        mkdir bin
+        make
+    </pre>
+
+    <h4 class="text-lg font-semibold">4. Add AFlat to Your Path</h4>
+    <p class="mb-2">
+        You can either create an alias or add AFlat to your system's PATH.
+    </p>
+
+    <p class="mb-2"><strong>Option 1: Create an Alias</strong></p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        echo 'alias aflat="~/aflat/bin/main"' >> ~/.bashrc
+        source ~/.bashrc
+    </pre>
+
+    <p class="mb-2"><strong>Option 2: Add to PATH</strong></p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        echo 'export PATH="$HOME/aflat/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-6">Verifying Installation</h3>
+    <p class="mb-2">
+        To check if AFlat is installed correctly, run:
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        aflat --version
+    </pre>
+    <p class="mb-4">
+        If the version number appears, AFlat is ready to use!
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Next Steps</h3>
+    <p class="mb-4">
+        Now that AFlat is installed, you can start writing your first AFlat program! 
+        Check out the 
+        <button 
+            hx-get="/book/basics" 
+            hx-trigger="click" 
+            hx-target="#content"
+            class="text-blue-600 underline">
+            Language Basics
+        </button> to begin.
+    </p>
+</section>

@@ -1,0 +1,204 @@
+<section class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">Ownership, References, and Selling in AFlat</h2>
+
+    <p class="mb-4">
+        AFlat uses an explicit ownership model for managing memory and resource lifetimes. 
+        Unlike some languages where variables are implicitly copied or moved, AFlat ensures 
+        clear ownership semantics. This guide covers lifetimes, references, and the 
+        <code>sell</code> operator to help you write efficient and safe AFlat code.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Lifetimes in AFlat</h3>
+    <p class="mb-4">
+        In AFlat, objects persist in memory until they go out of scope or are explicitly deleted.
+    </p>
+
+    <p class="font-semibold">Example: Scope-Based Lifetime</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn main() -> int {
+    int a = 5;  
+    if true {
+        int b = 10;  
+    };  
+
+    return 0; 
+};
+    </code></pre>
+
+    <p class="mb-4">
+        Variables allocated inside a control flow block are destroyed when the block ends. 
+        Objects created with <code>new</code> persist until explicitly deleted.
+    </p>
+
+    <p class="font-semibold">Example: Heap Allocation with `new`</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+class MyClass {
+    int value = 42;
+};
+
+fn main() -> int {
+    MyClass obj = new MyClass(); 
+    delete obj;  
+    return 0;
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">References in AFlat</h3>
+    <p class="mb-4">
+        All class objects in AFlat are passed by reference automatically. This means when 
+        you assign a class object to another variable, you are assigning a reference, not a copy.
+    </p>
+
+    <p class="font-semibold">Example: Class References</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+class Data {
+    mutable int value = 10;
+};
+
+fn modifyData(mutable Data &d) {
+    d.value = 42; 
+};
+
+fn main() -> int {
+    Data d = new Data();
+    modifyData(d);
+    print(`Updated value: {d.value}\n`);  
+    return 0;
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Mutable and Const References</h3>
+    <p class="mb-4">
+        AFlat allows defining mutable and constant references to control modifications.
+    </p>
+
+    <p class="font-semibold">Example: Const References</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn printValue(const int &a) {
+    print(`Value: {a}\n`);
+};
+
+fn main() -> int {
+    int x = 5;
+    printValue(x);  
+    return 0;
+};
+    </code></pre>
+
+    <p class="font-semibold">Example: Mutable References</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn increment(mutable int &a) {
+    a = a + 1;
+};
+
+fn main() -> int {
+    mutable int x = 5;
+    increment(x);
+    print(`Incremented value: {x}\n`);  
+    return 0;
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Selling (`$`) and Ownership Transfer</h3>
+    <p class="mb-4">
+        The <code>sell</code> operator (<code>$</code>) explicitly transfers ownership of an object, 
+        preventing further use of the original variable.
+    </p>
+
+    <p class="font-semibold">Example: Transferring Ownership</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn takeOwnership(mutable int &&a) {
+    print(`Taking ownership of {a}`);
+};
+
+fn main() -> int {
+    int x = 10;
+    takeOwnership($x);  
+    return 0;
+};
+    </code></pre>
+
+    <p class="font-semibold">Example: Selling to `Option`</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+import Option from "Utils/Option";
+
+fn main() -> int {
+    int x = 100;
+    Option maybeValue = some($x);  
+    return 0;
+};
+    </code></pre>
+
+    <p class="font-semibold">Example: Custom `_sell` Implementation in a Class</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+class Resource {
+    int data = 42;
+
+    fn _sell() -> Resource {
+        print("Resource is being moved");
+        return my;
+    };
+};
+
+fn main() -> int {
+    Resource r = new Resource();
+    Resource newOwner = $r;  
+    return 0;
+};
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Preventing Double Ownership</h3>
+    <p class="mb-4">
+        AFlat tracks sold variables to prevent reuse.
+    </p>
+
+    <p class="font-semibold">Example: Ownership Error Detection</p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+fn main() -> int {
+    int x = 5;
+    int y = $x;
+    int z = $x;  
+    return 0;
+};
+    </code></pre>
+
+    <p class="bg-red-100 p-3 rounded shadow-md text-sm mb-4">
+        <strong>Compiler Error:</strong> "Variable x was sold on line 2 and cannot be used again."
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Summary</h3>
+    <table class="table-auto w-full border-collapse border border-gray-300 text-left mb-4">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="border border-gray-300 p-2">Feature</th>
+                <th class="border border-gray-300 p-2">Behavior</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border border-gray-300 p-2">Lifetimes</td>
+                <td class="border border-gray-300 p-2">Objects persist until they go out of scope or are deleted.</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 p-2">References</td>
+                <td class="border border-gray-300 p-2">Class objects are always passed by reference.</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 p-2">`sell` (`$`) Operator</td>
+                <td class="border border-gray-300 p-2">Transfers ownership and prevents further use.</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 p-2">Ownership Tracking</td>
+                <td class="border border-gray-300 p-2">Prevents double-selling errors.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 class="text-xl font-semibold mt-6">Next Steps</h3>
+    <p class="mb-4">
+        Explore how ownership works with collections in 
+        <button hx-get="/book/collections" hx-trigger="click" hx-target="#content" class="text-blue-600 underline">
+            AFlat Collections
+        </button>.
+    </p>
+</section>

@@ -14,6 +14,7 @@ import {accept, reject} from "Utils/Result" under res;
 import { info, warning } from "./src/flat_log" under log;
 
 import Index, Example, GettingStarted, InstallScript, NotFoundPage, InstallPackage from "./src/UI/Index";
+import  Book, BookIntro, BookInstall, BookBasics, BookMemory, BookAdvanced, BookOwnership from "./src/UI/Book";
 import Package from "./src/API/Package";
 
 private string nameFromGit(string repo) {
@@ -40,8 +41,6 @@ class AflatServer signs Server {
 	InstallScript installScriptSH = new InstallScript();
 	InstallPackage installPackageSH = new InstallPackage();
 
-
-
 	HTTPResponce NotFound(HTTPMessage req) : NotFoundImpl {
 		const NotFoundPage notFoundPage = new NotFoundPage();
 		log.warning(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
@@ -61,6 +60,56 @@ class AflatServer signs Server {
 
 	Result gettingStarted() : GET("/getting-started") {
 		let resp = new HTTPResponce(my.gettingStartedHTMX.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn book() -> Result : GET("/book") {
+		// Reload Book every time for now for development
+		let book = new Book(); // The call will run in its own thread (not a coroutine) so no need to clean up the memory
+		let resp = new HTTPResponce(book.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn bookIntro() -> Result : GET("/book/introduction") {
+		let book = new BookIntro();
+		let resp = new HTTPResponce(book.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn bookInstall() -> Result : GET("/book/installation") {
+		let book = new BookInstall();
+		let resp = new HTTPResponce(book.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn bookBasics() -> Result : GET("/book/basics") {
+		let book = new BookBasics();
+		let resp = new HTTPResponce(book.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn bookMemory() -> Result : GET("/book/memory-management") {
+		let book = new BookMemory();
+		let resp = new HTTPResponce(book.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn bookAdvanced() -> Result : GET("/book/advanced") {
+		let book = new BookAdvanced();
+		let resp = new HTTPResponce(book.render(), "200", "OK");
+		resp.addHeader("Content-Type", "text/html");
+		res.accept(resp)
+	};
+
+	fn bookOwnership() -> Result : GET("/book/ownership") {
+		let book = new BookOwnership();
+		let resp = new HTTPResponce(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};

@@ -1,0 +1,147 @@
+<section class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">AFlat Language Basics</h2>
+
+    <p class="mb-4">
+        This section introduces the core concepts of the AFlat programming language, 
+        including its type system, variables, and basic syntax. AFlat is a 
+        low-level language that provides a balance between control and safety, 
+        making it ideal for performance-critical applications.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">1. Declaring Variables</h3>
+    <p class="mb-2">
+        In AFlat, <strong>all variables are `const` by default</strong>. If you need a mutable variable, 
+        you must explicitly mark it as <code>mutable</code>.
+    </p>
+
+    <p class="mb-2"><strong>Immutable Variables (Default):</strong></p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        int a = 42;  // 'a' is constant and cannot be modified
+    </pre>
+
+    <p class="mb-2"><strong>Mutable Variables:</strong></p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        mutable int a = 42;
+        a = 50;  // This is allowed because 'a' is mutable
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-6">2. Type System</h3>
+    <p class="mb-4">
+        AFlat provides several built-in types with strict memory sizes.
+    </p>
+    <ul class="list-disc list-inside mb-4 text-gray-700">
+        <li><strong>int</strong> - 4-byte signed integer</li>
+        <li><strong>float</strong> - 4-byte floating-point number</li>
+        <li><strong>long</strong> - 8-byte signed integer</li>
+        <li><strong>short</strong> - 2-byte integer</li>
+        <li><strong>bool</strong> - 1-byte boolean value</li>
+        <li><strong>adr</strong> - 8-byte memory address (pointer-like)</li>
+        <li><strong>generic</strong> - Special pointer type for reference-based operations</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-6">3. Type Inference</h3>
+    <p class="mb-2">
+        AFlat supports type inference using `let`, but it has limitations.
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        let x = "Hello";  // x is inferred as an adr (memory address)
+    </pre>
+    <p class="mb-4">
+        <strong>Warning:</strong> When using type inference with numeric types, AFlat assigns the `number` type, 
+        which is a union of all numeric types. This can cause unexpected behavior.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">4. Basic Operators</h3>
+    <p class="mb-2">
+        AFlat supports common arithmetic and comparison operators.
+    </p>
+
+    <h4 class="text-lg font-semibold mt-4">Arithmetic Operators</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        mutable int x = 10 + 5;   // Addition
+        mutable int y = x - 2;    // Subtraction
+        mutable int z = y * 3;    // Multiplication
+        mutable int w = z / 2;    // Division
+    </pre>
+
+    <h4 class="text-lg font-semibold mt-4">Comparison Operators</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        bool a = (10 > 5);   // true
+        bool b = (10 == 10); // true
+        bool c = (10 != 5);  // true
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-6">5. Control Flow</h3>
+    <p class="mb-4">
+        AFlat provides standard control structures, including <code>if</code> statements, 
+        <code>while</code> loops, and <code>for</code> loops.
+    </p>
+
+    <h4 class="text-lg font-semibold mt-4">If Statement</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        int x = 10;
+        if x > 5 {
+            print("x is greater than 5");
+        } else {
+            print("x is 5 or less");
+        };
+    </pre>
+
+    <h4 class="text-lg font-semibold mt-4">While Loop</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        mutable int i = 0;
+        while i < 5 {
+            print(i);
+            i = i + 1;
+        };
+    </pre>
+
+    <h4 class="text-lg font-semibold mt-4">For Loop</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        for mutable int i = 0; i < 10; i = i + 1 {
+            print(i);
+        };
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-6">6. Functions</h3>
+    <p class="mb-4">
+        Functions in AFlat are defined using the `fn` keyword.
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        fn add(int a, int b) -> int {
+            return a + b;
+        };
+    </pre>
+
+    <h4 class="text-lg font-semibold mt-4">Main Function</h4>
+    <p class="mb-2">
+        Every AFlat program starts execution from the `main` function.
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        fn main() -> int {
+            print("Hello, AFlat!");
+            return 0;
+        };
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-6">7. Pointers and Memory</h3>
+    <p class="mb-4">
+        AFlat uses a generic pointer type (`adr`) instead of type-specific pointers.
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4">
+        mutabble adr ptr = NULL;
+        ptr = ?someVariable;  // Get the address of a variable
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-6">Next Steps</h3>
+    <p class="mb-4">
+        Now that you understand the basics, explore more advanced topics like 
+        <button 
+            hx-get="/book/memory-management" 
+            hx-trigger="click" 
+            hx-target="#content"
+            class="text-blue-600 underline">
+            Memory Management
+        </button>.
+    </p>
+</section>

@@ -1,0 +1,119 @@
+<section class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-4">Memory Management in AFlat</h2>
+
+    <p class="mb-4">
+        AFlat gives developers full control over memory, allowing direct memory manipulation 
+        while providing optional safety features. Unlike many modern languages, AFlat does not 
+        have garbage collection—memory management is entirely manual.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Understanding Memory in AFlat</h3>
+    <p class="mb-4">
+        Memory in AFlat is divided into:
+    </p>
+    <ul class="list-disc list-inside mb-4 text-gray-700">
+        <li><strong>Stack:</strong> Stores function-local variables and control flow.</li>
+        <li><strong>Heap:</strong> Stores dynamically allocated memory.</li>
+        <li><strong>Static Memory:</strong> Stores global variables and constants.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-6">Working with Pointers (`adr`)</h3>
+    <p class="mb-4">
+        AFlat does not use type-specific pointers like C. Instead, all pointers are generic and 
+        stored in the <code>adr</code> type.
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+mutable adr ptr = NULL;  // Declare a pointer
+ptr = ?someVariable;  // Get the address of a variable
+int v = ptr as int;  // Dereference the pointer
+    </code></pre>
+
+    <p class="mb-4">
+        Since <code>adr</code> can point to anything, be cautious when dereferencing it, as 
+        no type safety is enforced.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Allocating and Freeing Memory</h3>
+    <p class="mb-2">
+        Memory on the heap is allocated using <code>new</code> and must be manually deleted.
+    </p>
+
+    <h4 class="text-lg font-semibold mt-4">Allocating Memory</h4>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+adr myData = new Class(10);  // Allocates an instance on the heap and calls the constructor
+    </code></pre>
+
+    <h4 class="text-lg font-semibold mt-4">Freeing Memory</h4>
+    <p class="mb-2">
+        Memory allocated with <code>new</code> must be explicitly deleted when no longer needed.
+    </p>
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+delete myData;
+    </code></pre>
+
+    <p class="mb-4">
+        <strong>Warning:</strong> Forgetting to free memory can lead to memory leaks, while 
+        freeing it too early can cause use-after-free errors.
+    </p>
+
+    <p class="mb-4">
+        AFlat also allows the use of <code>malloc</code> and <code>free</code> for manual memory
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+adr myData = malloc(10);  // Allocate 10 bytes
+free myData;  // Free the allocated memory
+    </code></pre>
+
+    <h3 class="text-xl font-semibold mt-6">Safe Object Ownership (`safe` Classes)</h3>
+    <p class="mb-4">
+        AFlat provides an optional ownership model using <code>safe</code> classes to 
+        prevent accidental memory misuse.
+    </p>
+
+    <pre class="bg-gray-100 p-4 rounded shadow-md text-sm mb-4"><code>
+safe class ManagedObject {
+    ManagedObject init() {
+        return my;
+    };
+
+    void endScope() {
+        free my;  // Automatically cleans up memory when out of scope
+    };
+};
+
+fn main() {
+    ManagedObject obj = new ManagedObject();
+};
+    </code></pre>
+
+    <p class="mb-4">
+        When a <code>safe</code> class instance goes out of scope, <code>endScope</code> is 
+        called automatically to clean up memory.
+    </p>
+
+    <h3 class="text-xl font-semibold mt-6">Avoiding Common Memory Errors</h3>
+    <p class="mb-2">
+        To write safe and efficient AFlat code, follow these best practices:
+    </p>
+    <ul class="list-disc list-inside mb-4 text-gray-700">
+        <li>Always free memory allocated with <code>new</code> unless using <code>safe</code> or <code>ref</code>.</li>
+        <li>Use <code>safe</code> classes to enforce object ownership.</li>
+        <li>Avoid dereferencing <code>adr</code> pointers without checking their validity.</li>
+        <li>Do not use a pointer after freeing it (use-after-free).</li>
+        <li>Minimize raw heap allocations by using boxing or reference counting.</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold mt-6">Next Steps</h3>
+    <p class="mb-4">
+        Now that you understand memory management, explore 
+        <button 
+            hx-get="/book/advanced" 
+            hx-trigger="click" 
+            hx-target="#content"
+            class="text-blue-600 underline">
+            Advanced Concepts
+        </button>.
+    </p>
+</section>
