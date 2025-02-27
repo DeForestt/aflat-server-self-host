@@ -55,14 +55,14 @@ class Data {
     mutable int value = 10;
 };
 
-fn modifyData(mutable Data &d) {
+fn modifyData(Data d) {
     d.value = 42; 
 };
 
 fn main() -> int {
     Data d = new Data();
     modifyData(d);
-    print(`Updated value: {d.value}\n`);  
+    str.print(`Updated value: {d.value}\n`);  
     return 0;
 };
     </code></pre>
