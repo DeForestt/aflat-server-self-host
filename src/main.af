@@ -4,7 +4,7 @@ import Map from "Utils/Map";
 import Server from "HTTP/Server";
 import GET, POST, PUT, DELETE from "HTTP/Endpoints";
 import Middleware from "HTTP/Middleware";
-import HTTPMessage, HTTPResponce, NotImplementedError, NotFoundError from "HTTP";
+import HTTPMessage, HTTPResponse, NotImplementedError, NotFoundError from "HTTP";
 import Endpoints, NotFoundImpl from "HTTP/Endpoint";
 import Content from "Web/Content";
 import Option from "Utils/Option";
@@ -27,8 +27,11 @@ class AflatServer signs Server {
 
 	Map logRequest() : Middleware {
 		return {
-			"after": [Server __s, HTTPMessage req, HTTPResponce r] => {
+			"before": [Server __s, HTTPMessage req] => {
 				log.info(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
+				return req;
+			},
+			"after": [Server __s, HTTPMessage __req, HTTPResponse r] => {
 				log.info(`\t{r.getStatusCode()} {r.getStatusMessage()}\n`);
 				return r;
 			}
@@ -41,25 +44,25 @@ class AflatServer signs Server {
 	InstallScript installScriptSH = new InstallScript();
 	InstallPackage installPackageSH = new InstallPackage();
 
-	HTTPResponce NotFound(HTTPMessage req) : NotFoundImpl {
+	HTTPResponse NotFound(HTTPMessage req) : NotFoundImpl {
 		const NotFoundPage notFoundPage = new NotFoundPage();
 		log.warning(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
 		log.warning(`\t attempted to access a non-existant page {req.endpoint} \n`);
 		notFoundPage.method = http.methodToString(req.method);
 		notFoundPage.endpoint = req.endpoint;
-		let resp = new HTTPResponce(notFoundPage.render(), "404", "Not Found");
+		let resp = new HTTPResponse(notFoundPage.render(), "404", "Not Found");
 		resp.addHeader("Content-Type", "text/html");
 		resp;
 	};
 
 	Result example() : GET("/examples") {
-		let resp = new HTTPResponce(my.exampleHTMX.render(), "200", "OK");
+		let resp = new HTTPResponse(my.exampleHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	Result gettingStarted() : GET("/getting-started") {
-		let resp = new HTTPResponce(my.gettingStartedHTMX.render(), "200", "OK");
+		let resp = new HTTPResponse(my.gettingStartedHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
@@ -67,49 +70,49 @@ class AflatServer signs Server {
 	fn book() -> Result : GET("/book") {
 		// Reload Book every time for now for development
 		let book = new Book(); // The call will run in its own thread (not a coroutine) so no need to clean up the memory
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	fn bookIntro() -> Result : GET("/book/introduction") {
 		let book = new BookIntro();
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	fn bookInstall() -> Result : GET("/book/installation") {
 		let book = new BookInstall();
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	fn bookBasics() -> Result : GET("/book/basics") {
 		let book = new BookBasics();
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	fn bookMemory() -> Result : GET("/book/memory-management") {
 		let book = new BookMemory();
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	fn bookAdvanced() -> Result : GET("/book/advanced") {
 		let book = new BookAdvanced();
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
 
 	fn bookOwnership() -> Result : GET("/book/ownership") {
 		let book = new BookOwnership();
-		let resp = new HTTPResponce(book.render(), "200", "OK");
+		let resp = new HTTPResponse(book.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
@@ -117,19 +120,19 @@ class AflatServer signs Server {
 	Result installPackage() : GET("/install-package.sh") {
 		my.installPackageSH.name = `LIBRARY_NAME`;
 		my.installPackageSH.repo = `github.com/DeForestt/test_repo`;
-		let resp = new HTTPResponce(my.installPackageSH.render(), "200", "OK");
+		let resp = new HTTPResponse(my.installPackageSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
 		return res.accept(resp)
 	};
 	
 	fn installScript() -> Result : GET("/install.sh") {
-		let resp = new HTTPResponce(my.installScriptSH.render(), "200", "OK");
+		let resp = new HTTPResponse(my.installScriptSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
 		res.accept(resp)
 	};
 
 	fn index() -> Result : GET("/") {
-		let resp = new HTTPResponce(my.indexHTMX.render(), "200", "OK");
+		let resp = new HTTPResponse(my.indexHTMX.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/html");
 		res.accept(resp)
 	};
@@ -148,7 +151,7 @@ class AflatServer signs Server {
 		my.installPackageSH.name = name;
 		my.installPackageSH.repo = repoVal;
 
-		let resp = new HTTPResponce(my.installPackageSH.render(), "200", "OK");
+		let resp = new HTTPResponse(my.installPackageSH.render(), "200", "OK");
 		resp.addHeader("Content-Type", "text/plain");
 		res.accept(resp)
 	};
@@ -157,7 +160,6 @@ class AflatServer signs Server {
 		return my;
 	};
 };
-
 
 fn main() {
 	let server = AflatServer();
