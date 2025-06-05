@@ -27,11 +27,11 @@ class AflatServer signs Server {
 
 	Map logRequest() : Middleware {
 		return {
-			"before": [Server __s, HTTPMessage req] => {
+			"before": fn (Server __s, HTTPMessage req) -> HTTPMessage {
 				log.info(`[{http.methodToString(req.method)}] {req.endpoint}\n`);
 				return req;
 			},
-			"after": [Server __s, HTTPMessage __req, HTTPResponse r] => {
+			"after": fn (Server __s, HTTPMessage __req, HTTPResponse r) -> HTTPResponse {
 				log.info(`\t{r.getStatusCode()} {r.getStatusMessage()}\n`);
 				return r;
 			}
